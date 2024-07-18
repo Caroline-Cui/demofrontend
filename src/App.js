@@ -16,29 +16,35 @@ function App() {
         fetchData()
     }, []);
   return (
-    <div className="App">
-        <header className="App-header">
-          {APIEndPoint.startsWith('http') &&
-            <APIResult />
-          }
-          <img src={logo} className="App-MainLogo" alt="logo" />
-        </header>
-        <p>This react-based application is hosted in an S3 bucket exposed through a CloudFront distribution</p>
-        <div className="logos">
-            <img src={logoS3} className="App-logoR2L" alt="logo S3" />
-            <img src={logoCF} className="App-logoL2R" alt="logo CloudFront" />
-        </div>
-    </div>
+    <Box style={{
+        display: 'flex',
+        justifyContent: 'center',
+        marginTop: '10%'
+    }}>
+        <Box>
+            <TextRender
+                startWords={'My name is'}
+                fieldVal={name}
+                updateVal={async (val) => {
+                    await updateProfile({
+                        name: val
+                    })
+                    setName(val)
+                }}
+            />
+            <TextRender
+                startWords={'My email is'}
+                fieldVal={email}
+                updateVal={async (val) => {
+                    await updateProfile({
+                        email: val
+                    })
+                    setEmail(val)
+                }}
+            />
+        </Box>
+    </Box>
   );
-}
-
-const APIResult = () => {
-  const { data, error } = useFetch(APIEndPoint, {
-    headers: { accept: "application/json" },
-  })
-  if (error) return <p>{error.message}</p>
-  if (data) return <p>{data.message}</p>
-  return null
 }
 
 export default App;
